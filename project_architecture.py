@@ -24,13 +24,14 @@ folder_list = [
     f"src/{project_name}/constants/__init__.py",
     f"src/{project_name}/logger.py",
     f"src/{project_name}/exception.py",
+    f"src/{project_name}/data_quality/__init__.py",
     "config/config.yaml",
     "params.yaml",
     "research/trials.ipynb",
     "templates/index.html",
     "app.py",
     "setup.py",
-    "requirements.tx"
+    "requirements.txt"
 
 ]
 
