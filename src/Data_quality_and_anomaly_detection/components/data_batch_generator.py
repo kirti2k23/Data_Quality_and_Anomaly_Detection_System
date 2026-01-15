@@ -121,7 +121,7 @@ class DataBatchGenerator:
         try:
             batch_file_path = os.path.join(self.bad_batch_path,batch_name)
             if os.path.exists(batch_file_path) and os.path.getsize(batch_file_path)>0:
-                logging.inof(f"{batch_name} exist at location {batch_file_path}")
+                logging.info(f"{batch_name} exist at location {batch_file_path}")
                 return batch_file_path
 
             df = self.get_dataframe()
