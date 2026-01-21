@@ -112,11 +112,51 @@ class DataValidation:
 
         except Exception as e:
             raise MycustomException(e)
-        pass
-    def check_invalid_values(self):
-        pass
-    def check_timebased_anomaly(self):
-        pass
+        
+    def check_invalid_values(self, df: pd.DataFrame, threshold: float= 0.01):
+        try:
+            logging.info("Checking invalid values")
+            rules = {
+                'Quantity': lambda x: x<0,
+                'UnitPrice': lambda x: (x<0)| (x>=99999)
+            }
+
+            invalid_report = {}
+            total_rows = len(df)
+
+            for col, rule in rules.items():
+                if col in df.columns:
+                    invalid_cnt = rule(df[col]).sum()
+                    invalid_pct = invalid_cnt/total_rows
+                    # print(f"{col}:{invalid_pct}")
+                    
+                    if invalid_pct>threshold:
+                        invalid_report[col] = {
+                            "invalid count": int(invalid_cnt),
+                            "invalid percentage": round(invalid_pct,3)
+                        }
+            
+            if invalid_report:
+                return {
+                    "status": "Failed",
+                    "Invalid columns": invalid_report
+                }
+            return {
+                "status": "Passed",
+                "Invalid columns":{}
+            }
+
+        except Exception as e:
+            raise MycustomException(e)
+        
+    def check_timebased_anomaly(self,df: pd.DataFrame, threshold: float = 0.1):
+        try:
+            logging.info("Starting the validation of time based anomaly!!!!!")
+            total_rows = len(df)
+
+            
+        except Exception as e:
+            raise MycustomException(e)
 
 
 if __name__ == "__main__":
@@ -151,10 +191,12 @@ if __name__ == "__main__":
         # missing_report = data_validation.check_missing_value(df = df)
         # print(missing_report)
         
-        duplicate_value_file = bacthgenerator.create_duplicate_value_batch()
-        df = pd.read_csv(duplicate_value_file)
-        duplicate_report = data_validation.check_duplicates(df = df)
-        print(duplicate_report)
+
+
+        invalid_value_file = bacthgenerator.create_invalid_value_batch()
+        df = pd.read_csv(invalid_value_file)
+        invalid_report = data_validation.check_invalid_values(df = df)
+        print(invalid_report)
 
     except Exception as e:
         raise MycustomException(e)

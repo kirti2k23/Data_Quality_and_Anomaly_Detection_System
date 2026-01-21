@@ -103,7 +103,7 @@ class DataBatchGenerator:
             # Rule 2: Quantity extremely high
             invalid_values_df.loc[invalid_values_df.index[:1000],'Quantity'] = 99999
 
-            df.to_csv(batch_file_path,index=False)
+            invalid_values_df.to_csv(batch_file_path,index=False)
 
             logging.info(f"find invalid value batch craeted successfully at {batch_file_path}")
             return batch_file_path
